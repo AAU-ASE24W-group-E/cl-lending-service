@@ -1,13 +1,12 @@
 package at.aau.ase.cl.service;
 
+import at.aau.ase.cl.api.interceptor.NotFoundException;
 import at.aau.ase.cl.api.model.LendingModel;
 import at.aau.ase.cl.api.model.LendingStatus;
 import at.aau.ase.cl.mapper.LendingMapper;
 import at.aau.ase.cl.model.LendingEntity;
-import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.NotFoundException;
 import org.jboss.logging.Logger;
 
 import java.util.List;
@@ -44,11 +43,19 @@ public class LendingService {
     }
 
     public List<LendingEntity> getLendingsByReaderId(UUID readerId) {
-        return LendingEntity.find("readerId = ?1 order by updatedAt desc", readerId).list();
+        List<LendingEntity> lendings = LendingEntity.find("ownerId = ?1 order by updatedAt desc", readerId).list();
+        if (lendings.isEmpty()) {
+            throw new NotFoundException("No lendings found for reader with ID: " + readerId);
+        }
+        return lendings;
     }
 
     public List<LendingEntity> getLendingsByOwnerId(UUID ownerId) {
-        return LendingEntity.find("ownerId = ?1 order by updatedAt desc", ownerId).list();
+        List<LendingEntity> lendings = LendingEntity.find("ownerId = ?1 order by updatedAt desc", ownerId).list();
+        if (lendings.isEmpty()) {
+            throw new NotFoundException("No lendings found for owner with ID: " + ownerId);
+        }
+        return lendings;
     }
 
     public List<LendingEntity> getLendingsByReaderIdAndStatus(UUID readerId, LendingStatus status) {

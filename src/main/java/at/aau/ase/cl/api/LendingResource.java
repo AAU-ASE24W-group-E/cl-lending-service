@@ -7,6 +7,7 @@ import at.aau.ase.cl.model.LendingEntity;
 import at.aau.ase.cl.service.LendingService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Path("/lendings")
+@Produces(MediaType.APPLICATION_JSON)
 public class LendingResource {
     @Inject
     LendingService lendingService;
