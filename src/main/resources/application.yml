@@ -1,0 +1,50 @@
+quarkus:
+  datasource:
+    db-kind: "postgresql"
+  hibernate-orm:
+    database:
+      generation: none
+  # see https://quarkus.io/guides/flyway
+  flyway:
+    enabled: true
+    table: "lending_schema_history"
+    clean-disabled: true
+    baseline-version: "0.0.1"
+    baseline-at-start: true
+    migrate-at-start: true
+
+  # see https://quarkus.io/guides/openapi-swaggerui
+  smallrye-openapi:
+    store-schema-directory: "target/openapi"
+    store-schema-file-name: "lending-service.yaml"
+  swagger-ui:
+    always-include: true
+    path: "/docs"
+    query-config-enabled: true
+
+  # see https://quarkus.io/guides/container-image#customizing
+  container-image:
+    group: "AAU-ASE24W-group-E"
+
+"%test":
+  quarkus:
+    datasource:
+      devservices:
+        enabled: true
+        reuse: false
+    hibernate-orm:
+      database:
+        generation: drop-and-create
+    flyway:
+      # in %test we drop-and-create the database, thus, migration is neither needed nor possible
+      migrate-at-start: false
+
+"%dev":
+  quarkus:
+    datasource:
+      devservices:
+        enabled: true
+        reuse: false
+    hibernate-orm:
+      database:
+        generation: drop-and-create
