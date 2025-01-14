@@ -3,7 +3,7 @@ package at.aau.ase.cl.api.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class LendingModel {
+public class Lending {
     private UUID id;
 
     private UUID bookId;
@@ -18,16 +18,16 @@ public class LendingModel {
 
     private LocalDateTime updatedAt;
 
-    public LendingModel() {
+    public Lending() {
     }
 
-    public LendingModel(UUID id,
-                        UUID bookId,
-                        UUID readerId,
-                        UUID ownerId,
-                        LendingStatus status,
-                        LocalDateTime createdAt,
-                        LocalDateTime updatedAt) {
+    public Lending(UUID id,
+                   UUID bookId,
+                   UUID readerId,
+                   UUID ownerId,
+                   LendingStatus status,
+                   LocalDateTime createdAt,
+                   LocalDateTime updatedAt) {
         this.id = id;
         this.bookId = bookId;
         this.readerId = readerId;
