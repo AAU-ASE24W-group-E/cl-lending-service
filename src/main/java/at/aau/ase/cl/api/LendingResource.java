@@ -1,19 +1,19 @@
 package at.aau.ase.cl.api;
 
 import at.aau.ase.cl.api.model.LendingModel;
+import at.aau.ase.cl.api.model.LendingStatus;
 import at.aau.ase.cl.mapper.LendingMapper;
 import at.aau.ase.cl.model.LendingEntity;
 import at.aau.ase.cl.service.LendingService;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Path("/lendings")
@@ -37,5 +37,50 @@ public class LendingResource {
         LendingEntity lending = lendingService.getLendingById(id);
         LendingModel model = LendingMapper.INSTANCE.map(lending);
         return Response.ok(model).build();
+    }
+
+    @GET
+    @Path("/readers/{readerId}")
+    @APIResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = LendingModel.class))})
+    public Response getLendingsByReaderId(@PathParam("readerId") UUID readerId,
+                                          @QueryParam("status") String status) {
+        List<LendingEntity> lendings;
+
+        if (status == null) {
+            lendings = lendingService.getLendingsByReaderId(readerId);
+        } else {
+            LendingStatus lendingStatus = validateStatus(status);
+            lendings = lendingService.getLendingsByReaderIdAndStatus(readerId, lendingStatus);
+        }
+
+        List<LendingModel> models = lendings.stream()
+                .map(LendingMapper.INSTANCE::map)
+                .toList();
+        return Response.ok(models).build();
+    }
+
+    @GET
+    @Path("/owners/{ownerId}")
+    @APIResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = LendingModel.class))})
+    public Response getLendingsByOwner(@PathParam("ownerId") UUID ownerId) {
+        List<LendingEntity> lendings = lendingService.getLendingsByOwnerId(ownerId);
+        List<LendingModel> models = lendings.stream()
+                .map(LendingMapper.INSTANCE::map)
+                .toList();
+        return Response.ok(models).build();
+    }
+
+    private LendingStatus validateStatus(String status) {
+        if (status == null || status.isBlank()) {
+            throw new BadRequestException("Status parameter is required.");
+        }
+        try {
+            return LendingStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("Invalid status: " + status + ". Valid statuses are: " +
+                    Arrays.toString(LendingStatus.values()));
+        }
     }
 }
