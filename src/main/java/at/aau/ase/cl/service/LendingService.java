@@ -5,6 +5,7 @@ import at.aau.ase.cl.api.model.LendingModel;
 import at.aau.ase.cl.api.model.LendingStatus;
 import at.aau.ase.cl.mapper.LendingMapper;
 import at.aau.ase.cl.model.LendingEntity;
+import at.aau.ase.cl.model.LendingHistoryEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import org.jboss.logging.Logger;
@@ -52,6 +53,16 @@ public class LendingService {
             throw new NotFoundException("Lending with ID " + id + " not found");
         }
 
+        if (lendingEntity.getStatus() == status) {
+            return LendingMapper.INSTANCE.map(lendingEntity); // No change, so return early
+        }
+
+        LendingHistoryEntity historyEntity = new LendingHistoryEntity();
+        historyEntity.setLendingRequestId(lendingEntity.getId());
+        historyEntity.setStatus(status);
+        historyEntity.setChangedAt(LocalDateTime.now());
+        historyEntity.persistAndFlush();
+
         lendingEntity.setStatus(status);
         lendingEntity.setUpdatedAt(LocalDateTime.now());
         lendingEntity.persistAndFlush();
@@ -80,4 +91,8 @@ public class LendingService {
         return LendingEntity.find("readerId = ?1 and status = ?2 order by updatedAt desc", readerId, status).list();
     }
 
+    @Transactional
+    public List<LendingHistoryEntity> getLendingHistoryByLendingId(UUID lendingId) {
+        return LendingHistoryEntity.find("lendingRequestId = ?1 order by changedAt desc", lendingId).list();
+    }
 }

@@ -1,4 +1,6 @@
 package at.aau.ase.cl.model;
 
-public class LendingMeetingEntity {
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
+public class LendingMeetingEntity extends PanacheEntityBase {
 }

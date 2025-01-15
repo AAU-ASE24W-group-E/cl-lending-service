@@ -1,10 +1,13 @@
 package at.aau.ase.cl.api;
 
 import at.aau.ase.cl.api.interceptor.exceptions.IllegalStatusException;
+import at.aau.ase.cl.api.model.LendingHistoryModel;
 import at.aau.ase.cl.api.model.LendingModel;
 import at.aau.ase.cl.api.model.LendingStatus;
+import at.aau.ase.cl.mapper.LendingHistoryMapper;
 import at.aau.ase.cl.mapper.LendingMapper;
 import at.aau.ase.cl.model.LendingEntity;
+import at.aau.ase.cl.model.LendingHistoryEntity;
 import at.aau.ase.cl.service.LendingService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -87,6 +90,19 @@ public class LendingResource {
         return Response.ok(lendingModel).build();
     }
 
+    @GET
+    @Path("/{id}/history")
+    @APIResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = LendingHistoryModel.class))
+    })
+    public Response getLendingHistory(@PathParam("id") UUID lendingId) {
+        List<LendingHistoryEntity> historyEntities = lendingService.getLendingHistoryByLendingId(lendingId);
+        List<LendingHistoryModel> historyModels = historyEntities.stream()
+                .map(LendingHistoryMapper.INSTANCE::map) // Assuming you have a mapper for history
+                .toList();
+
+        return Response.ok(historyModels).build();
+    }
 
     private LendingStatus validateStatus(String status) {
         if (status == null || status.isBlank()) {
