@@ -1,5 +1,6 @@
 package at.aau.ase.cl.api;
 
+import at.aau.ase.cl.api.interceptor.exceptions.IllegalStatusException;
 import at.aau.ase.cl.api.model.LendingModel;
 import at.aau.ase.cl.api.model.LendingStatus;
 import at.aau.ase.cl.mapper.LendingMapper;
@@ -74,14 +75,15 @@ public class LendingResource {
         return Response.ok(models).build();
     }
 
+
     private LendingStatus validateStatus(String status) {
         if (status == null || status.isBlank()) {
-            throw new BadRequestException("Status parameter is required.");
+            throw new IllegalStatusException("Status parameter is required.");
         }
         try {
             return LendingStatus.valueOf(status.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new BadRequestException("Invalid status: " + status + ". Valid statuses are: " +
+            throw new IllegalStatusException("Invalid status: " + status + ". Valid statuses are: " +
                     Arrays.toString(LendingStatus.values()));
         }
     }
