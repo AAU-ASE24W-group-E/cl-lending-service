@@ -47,11 +47,7 @@ public class LendingService {
     @Transactional
     public LendingModel updateLendingStatus(UUID id,
                                             LendingStatus status) {
-        LendingEntity lendingEntity = LendingEntity.findById(id);
-
-        if (lendingEntity == null) {
-            throw new NotFoundException("Lending with ID " + id + " not found");
-        }
+        LendingEntity lendingEntity = getLendingById(id);
 
         if (lendingEntity.getStatus() == status) {
             return LendingMapper.INSTANCE.map(lendingEntity); // No change, so return early
@@ -59,7 +55,7 @@ public class LendingService {
 
         LendingHistoryEntity historyEntity = new LendingHistoryEntity();
         historyEntity.setLendingRequestId(lendingEntity.getId());
-        historyEntity.setStatus(status);
+        historyEntity.setStatus(lendingEntity.getStatus());     // Storing old status
         historyEntity.setChangedAt(LocalDateTime.now());
         historyEntity.persistAndFlush();
 
@@ -71,7 +67,7 @@ public class LendingService {
     }
 
     public List<LendingEntity> getLendingsByReaderId(UUID readerId) {
-        List<LendingEntity> lendings = LendingEntity.find("ownerId = ?1 order by updatedAt desc", readerId).list();
+        List<LendingEntity> lendings = LendingEntity.find("readerId = ?1 order by updatedAt desc", readerId).list();
         if (lendings.isEmpty()) {
             throw new NotFoundException("No lendings found for reader with ID: " + readerId);
         }
