@@ -75,6 +75,18 @@ public class LendingResource {
         return Response.ok(models).build();
     }
 
+    @PATCH
+    @Path("/{id}")
+    @APIResponse(responseCode = "200", description = "OK")
+    public Response updateLendingStatus(@PathParam("id") UUID id,
+                                        @QueryParam("status") String status) {
+        LendingStatus lendingStatus = validateStatus(status);
+
+        LendingModel lendingModel = lendingService.updateLendingStatus(id, lendingStatus);
+
+        return Response.ok(lendingModel).build();
+    }
+
 
     private LendingStatus validateStatus(String status) {
         if (status == null || status.isBlank()) {

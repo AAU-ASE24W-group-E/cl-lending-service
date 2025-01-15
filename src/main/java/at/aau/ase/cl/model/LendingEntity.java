@@ -23,8 +23,8 @@ public class LendingEntity extends PanacheEntityBase {
     @Column(nullable = false, name = "owner_id")
     private UUID ownerId;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private LendingStatus status;
 
     @Column(nullable = false, updatable = false, name = "created_at")
@@ -33,16 +33,10 @@ public class LendingEntity extends PanacheEntityBase {
     @Column(nullable = false, name = "updated_at")
     private LocalDateTime updatedAt;
 
-    //    TODO handling in DB or via API?
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = createdAt;
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
     }
 
     public UUID getId() {
