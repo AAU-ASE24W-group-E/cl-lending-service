@@ -32,13 +32,6 @@ public class LendingMeetingModel {
         this.id = id;
     }
 
-    public UUID getLendingRequestId() {
-        return lendingRequestId;
-    }
-
-    public void setLendingRequestId(UUID lendingRequestId) {
-        this.lendingRequestId = lendingRequestId;
-    }
 
     public LocalDateTime getMeetingTime() {
         return meetingTime;
@@ -46,6 +39,14 @@ public class LendingMeetingModel {
 
     public void setMeetingTime(LocalDateTime meetingTime) {
         this.meetingTime = meetingTime;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getMeetingPlace() {
@@ -64,11 +65,12 @@ public class LendingMeetingModel {
         this.deadline = deadline;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+
+    public UUID getLendingRequestId() {
+        return lendingRequestId;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setLendingRequestId(UUID lendingRequestId) {
+        this.lendingRequestId = lendingRequestId;
     }
 }

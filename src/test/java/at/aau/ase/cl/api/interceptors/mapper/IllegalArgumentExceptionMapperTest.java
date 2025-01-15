@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
-public class IllegalArgumentExceptionMapperTest {
+class IllegalArgumentExceptionMapperTest {
     @Inject
     IllegalArgumentExceptionMapper mapper;
 

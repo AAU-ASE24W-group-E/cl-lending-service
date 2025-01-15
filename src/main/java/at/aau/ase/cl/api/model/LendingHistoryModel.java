@@ -19,6 +19,14 @@ public class LendingHistoryModel {
         this.changedAt = changedAt;
     }
 
+    public LendingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LendingStatus status) {
+        this.status = status;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -33,14 +41,6 @@ public class LendingHistoryModel {
 
     public void setLendingRequestId(UUID lendingRequestId) {
         this.lendingRequestId = lendingRequestId;
-    }
-
-    public LendingStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(LendingStatus status) {
-        this.status = status;
     }
 
     public LocalDateTime getChangedAt() {

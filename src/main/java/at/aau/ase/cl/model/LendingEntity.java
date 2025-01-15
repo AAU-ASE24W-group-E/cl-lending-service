@@ -47,12 +47,13 @@ public class LendingEntity extends PanacheEntityBase {
         this.id = id;
     }
 
-    public UUID getBookId() {
-        return bookId;
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public void setBookId(UUID bookId) {
-        this.bookId = bookId;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public UUID getReaderId() {
@@ -79,19 +80,19 @@ public class LendingEntity extends PanacheEntityBase {
         this.status = status;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public UUID getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(UUID bookId) {
+        this.bookId = bookId;
     }
 }
