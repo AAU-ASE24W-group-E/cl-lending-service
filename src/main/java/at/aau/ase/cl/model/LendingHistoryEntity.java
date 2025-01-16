@@ -4,7 +4,7 @@ import at.aau.ase.cl.api.model.LendingStatus;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -23,7 +23,7 @@ public class LendingHistoryEntity extends PanacheEntityBase {
     private LendingStatus status;
 
     @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime changedAt;
+    private Instant changedAt;
 
     public LendingHistoryEntity() {
     }
@@ -31,7 +31,7 @@ public class LendingHistoryEntity extends PanacheEntityBase {
     public LendingHistoryEntity(UUID id,
                                 UUID lendingRequestId,
                                 LendingStatus status,
-                                LocalDateTime changedAt) {
+                                Instant changedAt) {
         this.id = id;
         this.lendingRequestId = lendingRequestId;
         this.status = status;
@@ -62,11 +62,11 @@ public class LendingHistoryEntity extends PanacheEntityBase {
         this.status = status;
     }
 
-    public LocalDateTime getChangedAt() {
+    public Instant getChangedAt() {
         return changedAt;
     }
 
-    public void setChangedAt(LocalDateTime changedAt) {
+    public void setChangedAt(Instant changedAt) {
         this.changedAt = changedAt;
     }
 }

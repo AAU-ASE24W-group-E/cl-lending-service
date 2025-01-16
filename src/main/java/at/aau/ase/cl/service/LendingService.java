@@ -9,9 +9,8 @@ import at.aau.ase.cl.model.LendingHistoryEntity;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
-import org.jboss.logging.Logger;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,11 +50,11 @@ public class LendingService {
         LendingHistoryEntity historyEntity = new LendingHistoryEntity();
         historyEntity.setLendingRequestId(lendingEntity.getId());
         historyEntity.setStatus(lendingEntity.getStatus());     // Storing old status
-        historyEntity.setChangedAt(LocalDateTime.now());
+        historyEntity.setChangedAt(Instant.now());
         historyEntity.persistAndFlush();
 
         lendingEntity.setStatus(status);
-        lendingEntity.setUpdatedAt(LocalDateTime.now());
+        lendingEntity.setUpdatedAt(Instant.now());
         lendingEntity.persistAndFlush();
 
         return LendingMapper.INSTANCE.map(lendingEntity);

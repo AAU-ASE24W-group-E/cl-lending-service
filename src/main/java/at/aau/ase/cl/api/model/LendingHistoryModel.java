@@ -1,18 +1,18 @@
 package at.aau.ase.cl.api.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 public class LendingHistoryModel {
     private UUID id;
     private UUID lendingRequestId;
     private LendingStatus status;
-    private LocalDateTime changedAt;
+    private Instant changedAt;
 
     public LendingHistoryModel() {
     }
 
-    public LendingHistoryModel(UUID id, UUID lendingRequestId, LendingStatus status, LocalDateTime changedAt) {
+    public LendingHistoryModel(UUID id, UUID lendingRequestId, LendingStatus status, Instant changedAt) {
         this.id = id;
         this.lendingRequestId = lendingRequestId;
         this.status = status;
@@ -43,11 +43,11 @@ public class LendingHistoryModel {
         this.lendingRequestId = lendingRequestId;
     }
 
-    public LocalDateTime getChangedAt() {
+    public Instant getChangedAt() {
         return changedAt;
     }
 
-    public void setChangedAt(LocalDateTime changedAt) {
+    public void setChangedAt(Instant changedAt) {
         this.changedAt = changedAt;
     }
 }

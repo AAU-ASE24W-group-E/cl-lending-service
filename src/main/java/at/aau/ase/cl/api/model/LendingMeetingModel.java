@@ -1,21 +1,21 @@
 package at.aau.ase.cl.api.model;
-import java.time.LocalDateTime;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public class LendingMeetingModel {
     private UUID id;
     private UUID lendingRequestId;
-    private LocalDateTime meetingTime;
+    private Instant meetingTime;
     private String meetingPlace;
-    private LocalDateTime deadline;
-    private LocalDateTime createdAt;
+    private Instant deadline;
+    private Instant createdAt;
 
     public LendingMeetingModel() {
     }
 
-    public LendingMeetingModel(UUID id, UUID lendingRequestId, LocalDateTime meetingTime,
-                               String meetingPlace, LocalDateTime deadline, LocalDateTime createdAt) {
+    public LendingMeetingModel(UUID id, UUID lendingRequestId, Instant meetingTime,
+                               String meetingPlace, Instant deadline, Instant createdAt) {
         this.id = id;
         this.lendingRequestId = lendingRequestId;
         this.meetingTime = meetingTime;
@@ -33,19 +33,19 @@ public class LendingMeetingModel {
     }
 
 
-    public LocalDateTime getMeetingTime() {
+    public Instant getMeetingTime() {
         return meetingTime;
     }
 
-    public void setMeetingTime(LocalDateTime meetingTime) {
+    public void setMeetingTime(Instant meetingTime) {
         this.meetingTime = meetingTime;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -57,11 +57,11 @@ public class LendingMeetingModel {
         this.meetingPlace = meetingPlace;
     }
 
-    public LocalDateTime getDeadline() {
+    public Instant getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
+    public void setDeadline(Instant deadline) {
         this.deadline = deadline;
     }
 

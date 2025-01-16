@@ -1,6 +1,6 @@
 package at.aau.ase.cl.api.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 public class LendingModel {
@@ -14,9 +14,9 @@ public class LendingModel {
 
     private LendingStatus status;
 
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     public LendingModel() {
     }
@@ -26,8 +26,8 @@ public class LendingModel {
                         UUID readerId,
                         UUID ownerId,
                         LendingStatus status,
-                        LocalDateTime createdAt,
-                        LocalDateTime updatedAt) {
+                        Instant createdAt,
+                        Instant updatedAt) {
         this.id = id;
         this.bookId = bookId;
         this.readerId = readerId;
@@ -78,19 +78,19 @@ public class LendingModel {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Instant getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
