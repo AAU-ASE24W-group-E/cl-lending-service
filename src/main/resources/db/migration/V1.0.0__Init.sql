@@ -11,7 +11,7 @@ CREATE TABLE lending_requests
 --     CONSTRAINT status_check CHECK (status IN ('pending', 'accepted', 'rejected', 'completed'))
 );
 
-CREATE TABLE meetings
+CREATE TABLE lending_meetings
 (
     id                 UUID         NOT NULL PRIMARY KEY,
     lending_request_id UUID         NOT NULL,
