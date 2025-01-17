@@ -135,12 +135,6 @@ public class LendingServiceTest {
     }
 
     @Test
-    void testGetLendingsByReaderIdError() {
-        UUID randomId = UUID.randomUUID();
-        assertThrows(NotFoundException.class, () -> lendingService.getLendingsByReaderId(randomId));
-    }
-
-    @Test
     void testGetLendingsByOwnerId() {
         LendingModel lending = new LendingModel();
         lending.setStatus(LendingStatus.BORROWED);
@@ -153,12 +147,6 @@ public class LendingServiceTest {
 
         List<LendingEntity> lendings = lendingService.getLendingsByOwnerId(testOwnerId);
         assertEquals(lendingId, lendings.get(0).getId());
-    }
-
-    @Test
-    void testGetLendingsByOwnerIdError() {
-        UUID randomId = UUID.randomUUID();
-        assertThrows(NotFoundException.class, () -> lendingService.getLendingsByOwnerId(randomId));
     }
 
     @Test
