@@ -56,14 +56,6 @@ public class LendingModel {
         this.readerId = readerId;
     }
 
-    public UUID getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(UUID ownerId) {
-        this.ownerId = ownerId;
-    }
-
     public LendingStatus getStatus() {
         return status;
     }
@@ -87,4 +79,13 @@ public class LendingModel {
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public UUID getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(UUID ownerId) {
+        this.ownerId = ownerId;
+    }
+
 }
