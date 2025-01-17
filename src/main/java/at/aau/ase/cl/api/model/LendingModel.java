@@ -21,20 +21,14 @@ public class LendingModel {
     public LendingModel() {
     }
 
-    public LendingModel(UUID id,
-                        UUID bookId,
+    public LendingModel(UUID bookId,
                         UUID readerId,
                         UUID ownerId,
-                        LendingStatus status,
-                        Instant createdAt,
-                        Instant updatedAt) {
-        this.id = id;
+                        LendingStatus status) {
         this.bookId = bookId;
         this.readerId = readerId;
         this.ownerId = ownerId;
         this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
 

@@ -98,7 +98,7 @@ public class LendingResource {
     public Response getLendingHistory(@PathParam("id") UUID lendingId) {
         List<LendingHistoryEntity> historyEntities = lendingService.getLendingHistoryByLendingId(lendingId);
         List<LendingHistoryModel> historyModels = historyEntities.stream()
-                .map(LendingHistoryMapper.INSTANCE::map) // Assuming you have a mapper for history
+                .map(LendingHistoryMapper.INSTANCE::map)
                 .toList();
 
         return Response.ok(historyModels).build();
