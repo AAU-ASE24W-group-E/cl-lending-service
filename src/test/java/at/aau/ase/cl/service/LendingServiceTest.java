@@ -21,13 +21,12 @@ public class LendingServiceTest {
     @Inject
     LendingService lendingService;
 
-    private static UUID testLendingId;
-    private static UUID testReaderId;
-    private static UUID testOwnerId;
-    private static UUID testBookId;
+    private UUID testReaderId;
+    private UUID testOwnerId;
+    private UUID testBookId;
 
-    @BeforeAll
-    static void initUuids() {
+    @BeforeEach
+    void initUuids() {
         testReaderId = UUID.randomUUID();
         testOwnerId = UUID.randomUUID();
         testBookId = UUID.randomUUID();
@@ -49,8 +48,6 @@ public class LendingServiceTest {
         assertEquals(testOwnerId, createdLending.getOwnerId());
         assertEquals(testBookId, createdLending.getBookId());
         assertEquals(LendingStatus.BORROWED, createdLending.getStatus());
-
-        testLendingId = createdLending.getId();
     }
 
     @Test
