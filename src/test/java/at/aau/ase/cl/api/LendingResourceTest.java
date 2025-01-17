@@ -7,6 +7,7 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
@@ -146,6 +147,35 @@ public class LendingResourceTest {
                 .body("ownerId", equalTo(ownerId.toString()))
                 .body("status", equalTo(LendingStatus.OWNER_DENIED.toString()));
     }
+
+    @Test
+    void testUpdateLendingStatusBlank() {
+        String id = createLendingAndGetId(LendingStatus.BORROWED);
+
+        given()
+                .contentType(ContentType.JSON)
+                .patch("/lendings/" + id + "?status")
+                .then()
+                .statusCode(404)
+                .log().body(true)
+                .body("type", equalTo("IllegalStatusException"))
+                .body("message", equalTo("Status parameter is required."));
+    }
+
+    @Test
+    void testUpdateLendingWrongStatus() {
+        String id = createLendingAndGetId(LendingStatus.BORROWED);
+
+        given()
+                .contentType(ContentType.JSON)
+                .patch("/lendings/" + id + "?status=OTHER_STATUS")
+                .then()
+                .statusCode(404)
+                .log().body(true)
+                .body("type", equalTo("IllegalStatusException"))
+                .body("message", equalTo("Invalid status: OTHER_STATUS. Valid statuses are: " + Arrays.toString(LendingStatus.values())));
+    }
+
 
     @Test
     void testGetLendingHistory() {
