@@ -161,7 +161,7 @@ class LendingResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .patch("/lendings/" + id + "?status= ")
+                .patch("/lendings/" + id + "?status=" + " ")
                 .then()
                 .statusCode(404)
                 .log().body(true)

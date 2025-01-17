@@ -32,10 +32,6 @@ public class LendingHistoryEntity extends PanacheEntityBase {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public UUID getLendingRequestId() {
         return lendingRequestId;
     }
