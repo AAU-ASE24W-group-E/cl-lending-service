@@ -15,7 +15,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-public class LendingResourceTest {
+class LendingResourceTest {
     private UUID bookId;
     private UUID readerId;
     private UUID ownerId;
@@ -104,8 +104,6 @@ public class LendingResourceTest {
                 .body("[0].bookId", equalTo(bookId.toString()))
                 .body("[0].status", equalTo(LendingStatus.BORROWED.toString()));
     }
-
-    // TODO status checking
 
     @Test
     void testGetLendingsByOwnerId() {
