@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
-class LendingService {
+public class LendingService {
 
     @Transactional
     public LendingModel createLending(LendingModel lendingModel) {

@@ -17,7 +17,7 @@ import static io.smallrye.common.constraint.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
-public class LendingServiceTest {
+class LendingServiceTest {
     @Inject
     LendingService lendingService;
 
