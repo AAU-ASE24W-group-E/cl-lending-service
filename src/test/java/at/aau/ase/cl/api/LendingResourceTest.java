@@ -158,6 +158,15 @@ class LendingResourceTest {
                 .log().body(true)
                 .body("type", equalTo("IllegalStatusException"))
                 .body("message", equalTo("Status parameter is required."));
+
+        given()
+                .contentType(ContentType.JSON)
+                .patch("/lendings/" + id + "?status= ")
+                .then()
+                .statusCode(404)
+                .log().body(true)
+                .body("type", equalTo("IllegalStatusException"))
+                .body("message", equalTo("Status parameter is required."));
     }
 
     @Test

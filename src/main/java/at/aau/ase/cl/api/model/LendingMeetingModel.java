@@ -14,16 +14,6 @@ public class LendingMeetingModel {
     public LendingMeetingModel() {
     }
 
-    public LendingMeetingModel(UUID id, UUID lendingRequestId, Instant meetingTime,
-                               String meetingPlace, Instant deadline, Instant createdAt) {
-        this.id = id;
-        this.lendingRequestId = lendingRequestId;
-        this.meetingTime = meetingTime;
-        this.meetingPlace = meetingPlace;
-        this.deadline = deadline;
-        this.createdAt = createdAt;
-    }
-
     public UUID getId() {
         return id;
     }

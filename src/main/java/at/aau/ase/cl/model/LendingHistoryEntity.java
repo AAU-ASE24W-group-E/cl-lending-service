@@ -28,16 +28,6 @@ public class LendingHistoryEntity extends PanacheEntityBase {
     public LendingHistoryEntity() {
     }
 
-    public LendingHistoryEntity(UUID id,
-                                UUID lendingRequestId,
-                                LendingStatus status,
-                                Instant changedAt) {
-        this.id = id;
-        this.lendingRequestId = lendingRequestId;
-        this.status = status;
-        this.changedAt = changedAt;
-    }
-
     public UUID getId() {
         return id;
     }
