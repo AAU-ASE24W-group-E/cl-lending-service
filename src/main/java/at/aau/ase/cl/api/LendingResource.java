@@ -10,9 +10,9 @@ import at.aau.ase.cl.mapper.LendingHistoryMapper;
 import at.aau.ase.cl.mapper.LendingMapper;
 import at.aau.ase.cl.model.LendingEntity;
 import at.aau.ase.cl.model.LendingHistoryEntity;
-import at.aau.ase.cl.model.LendingMeetingEntity;
 import at.aau.ase.cl.service.LendingService;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -94,11 +94,11 @@ public class LendingResource {
         return Response.ok(lendingModel).build();
     }
 
-    @PATCH
+    @POST
     @Path("/{id}/meeting")
     @APIResponse(responseCode = "200", description = "OK")
-    public Response updateLendingMeeting(@PathParam("id") UUID lendingId,
-                                         LendingMeetingModel lendingMeetingModel) {
+    public Response createLendingMeeting(@PathParam("id") UUID lendingId,
+                                         @Valid LendingMeetingModel lendingMeetingModel) {
         validateMeeting(lendingMeetingModel);
         LendingModel updatedLendingModel = lendingService.createLendingMeeting(lendingMeetingModel, lendingId);
 
@@ -132,7 +132,7 @@ public class LendingResource {
     }
 
     private void validateMeeting(LendingMeetingModel meeting) {
-        if (meeting.getMeetingPlace() == null || meeting.getMeetingPlace().isBlank()) {
+        if (meeting.getMeetingLocation() == null || meeting.getMeetingLocation().isBlank()) {
             throw new IllegalMeetingException("Meeting place parameter is required.");
         }
         if (meeting.getMeetingTime() == null) {

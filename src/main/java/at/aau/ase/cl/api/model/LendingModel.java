@@ -1,21 +1,18 @@
 package at.aau.ase.cl.api.model;
 
-import jakarta.validation.constraints.NotNull;
-
 import java.time.Instant;
 import java.util.UUID;
 
 public class LendingModel {
     private UUID id;
 
-    @NotNull
     private UUID bookId;
 
     private UUID readerId;
 
     private UUID ownerId;
 
-    private LendingMeetingModel meetingModel;
+    private LendingMeetingModel lendingMeeting;
 
     private LendingStatus status;
 
@@ -29,10 +26,12 @@ public class LendingModel {
     public LendingModel(UUID bookId,
                         UUID readerId,
                         UUID ownerId,
+                        LendingMeetingModel lendingMeeting,
                         LendingStatus status) {
         this.bookId = bookId;
         this.readerId = readerId;
         this.ownerId = ownerId;
+        this.lendingMeeting = lendingMeeting;
         this.status = status;
     }
 
@@ -93,4 +92,11 @@ public class LendingModel {
         this.ownerId = ownerId;
     }
 
+    public LendingMeetingModel getLendingMeeting() {
+        return lendingMeeting;
+    }
+
+    public void setLendingMeeting(LendingMeetingModel lendingMeeting) {
+        this.lendingMeeting = lendingMeeting;
+    }
 }

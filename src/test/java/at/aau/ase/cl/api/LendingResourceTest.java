@@ -29,7 +29,7 @@ class LendingResourceTest {
 
     @Test
     void testCreateLending() {
-        LendingModel lending = new LendingModel(bookId, readerId, ownerId, LendingStatus.BORROWED);
+        LendingModel lending = new LendingModel(bookId, readerId, ownerId, null, LendingStatus.BORROWED);
 
         given()
                 .contentType(ContentType.JSON)
@@ -215,7 +215,7 @@ class LendingResourceTest {
 
 
     private String createLendingAndGetId(LendingStatus status) {
-        LendingModel lending = new LendingModel(bookId, readerId, ownerId, status);
+        LendingModel lending = new LendingModel(bookId, readerId, ownerId, null, status);
 
         return given()
                 .contentType(ContentType.JSON)

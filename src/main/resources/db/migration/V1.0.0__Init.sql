@@ -1,3 +1,4 @@
+-- TODO need to be updated
 CREATE TABLE lending_requests
 (
     id         UUID                                               NOT NULL PRIMARY KEY,
