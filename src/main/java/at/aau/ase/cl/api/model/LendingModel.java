@@ -12,6 +12,8 @@ public class LendingModel {
 
     private UUID ownerId;
 
+    private LendingMeetingModel lendingMeeting;
+
     private LendingStatus status;
 
     private Instant createdAt;
@@ -24,10 +26,12 @@ public class LendingModel {
     public LendingModel(UUID bookId,
                         UUID readerId,
                         UUID ownerId,
+                        LendingMeetingModel lendingMeeting,
                         LendingStatus status) {
         this.bookId = bookId;
         this.readerId = readerId;
         this.ownerId = ownerId;
+        this.lendingMeeting = lendingMeeting;
         this.status = status;
     }
 
@@ -88,4 +92,11 @@ public class LendingModel {
         this.ownerId = ownerId;
     }
 
+    public LendingMeetingModel getLendingMeeting() {
+        return lendingMeeting;
+    }
+
+    public void setLendingMeeting(LendingMeetingModel lendingMeeting) {
+        this.lendingMeeting = lendingMeeting;
+    }
 }

@@ -5,7 +5,7 @@ import at.aau.ase.cl.model.LendingEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(uses = LendingMeetingMapper.class)
 public interface LendingMapper {
     LendingMapper INSTANCE = Mappers.getMapper(LendingMapper.class);
 

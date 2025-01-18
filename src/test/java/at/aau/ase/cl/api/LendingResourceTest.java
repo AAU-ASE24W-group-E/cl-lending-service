@@ -1,5 +1,6 @@
 package at.aau.ase.cl.api;
 
+import at.aau.ase.cl.api.model.LendingMeetingModel;
 import at.aau.ase.cl.api.model.LendingModel;
 import at.aau.ase.cl.api.model.LendingStatus;
 import io.quarkus.test.junit.QuarkusTest;
@@ -7,6 +8,8 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -29,7 +32,7 @@ class LendingResourceTest {
 
     @Test
     void testCreateLending() {
-        LendingModel lending = new LendingModel(bookId, readerId, ownerId, LendingStatus.BORROWED);
+        LendingModel lending = new LendingModel(bookId, readerId, ownerId, null, LendingStatus.BORROWED);
 
         given()
                 .contentType(ContentType.JSON)
@@ -215,7 +218,7 @@ class LendingResourceTest {
 
 
     private String createLendingAndGetId(LendingStatus status) {
-        LendingModel lending = new LendingModel(bookId, readerId, ownerId, status);
+        LendingModel lending = new LendingModel(bookId, readerId, ownerId, null, status);
 
         return given()
                 .contentType(ContentType.JSON)
@@ -230,6 +233,113 @@ class LendingResourceTest {
                 .body("status", equalTo(status.toString()))
                 .extract()
                 .path("id");
+    }
+
+
+    @Test
+    void testPostMeetingSuccessfully() {
+        String id = createLendingAndGetId(LendingStatus.BORROWED);
+        LendingMeetingModel meeting = new LendingMeetingModel(Instant.now().plus(30, ChronoUnit.DAYS),
+                                                "Location",Instant.now().plus(30, ChronoUnit.DAYS) );
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(meeting)
+                .post("/lendings/" + id + "/meeting")
+                .then()
+                .statusCode(200)
+                .log().body(true)
+                .body("bookId", equalTo(bookId.toString()))
+                .body("readerId", equalTo(readerId.toString()))
+                .body("ownerId", equalTo(ownerId.toString()))
+                .body("status", equalTo(LendingStatus.BORROWED.toString()))
+                .body("lendingMeeting.meetingLocation", equalTo("Location"));
+
+    }
+
+    @Test
+    void testPostEmptyMeetingLocation() {
+        String id = createLendingAndGetId(LendingStatus.BORROWED);
+        LendingMeetingModel meeting = new LendingMeetingModel(Instant.now().plus(30, ChronoUnit.DAYS),
+                "",Instant.now().plus(30, ChronoUnit.DAYS) );
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(meeting)
+                .post("/lendings/" + id + "/meeting")
+                .then()
+                .statusCode(400)
+                .log().body(true)
+                .body("type", equalTo("IllegalMeetingException"))
+                .body("message", equalTo("Meeting place parameter is required."));
+    }
+
+    @Test
+    void testPostEmptyDeadline() {
+        String id = createLendingAndGetId(LendingStatus.BORROWED);
+        LendingMeetingModel meeting = new LendingMeetingModel(Instant.now().plus(30, ChronoUnit.DAYS),
+                "Location", null );
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(meeting)
+                .post("/lendings/" + id + "/meeting")
+                .then()
+                .statusCode(400)
+                .log().body(true)
+                .body("type", equalTo("IllegalMeetingException"))
+                .body("message", equalTo("Deadline parameter is required."));
+    }
+
+    @Test
+    void testPostEmptyMeetingTime() {
+        String id = createLendingAndGetId(LendingStatus.BORROWED);
+        LendingMeetingModel meeting = new LendingMeetingModel(null,
+                "Location", Instant.now().plus(30, ChronoUnit.DAYS) );
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(meeting)
+                .post("/lendings/" + id + "/meeting")
+                .then()
+                .statusCode(400)
+                .log().body(true)
+                .body("type", equalTo("IllegalMeetingException"))
+                .body("message", equalTo("Meeting time parameter is required."));
+    }
+
+    @Test
+    void testPostPastMeetingTime() {
+        String id = createLendingAndGetId(LendingStatus.BORROWED);
+        LendingMeetingModel meeting = new LendingMeetingModel(Instant.now().minus(30, ChronoUnit.DAYS),
+                "Location", Instant.now().plus(30, ChronoUnit.DAYS) );
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(meeting)
+                .post("/lendings/" + id + "/meeting")
+                .then()
+                .statusCode(400)
+                .log().body(true)
+                .body("type", equalTo("IllegalMeetingException"))
+                .body("message", equalTo("Dates have to be in the future."));
+    }
+
+    @Test
+    void testPostPastDeadline() {
+        String id = createLendingAndGetId(LendingStatus.BORROWED);
+        LendingMeetingModel meeting = new LendingMeetingModel(Instant.now().minus(30, ChronoUnit.DAYS),
+                "Location", Instant.now().minus(30, ChronoUnit.DAYS) );
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(meeting)
+                .post("/lendings/" + id + "/meeting")
+                .then()
+                .statusCode(400)
+                .log().body(true)
+                .body("type", equalTo("IllegalMeetingException"))
+                .body("message", equalTo("Dates have to be in the future."));
     }
 }
 

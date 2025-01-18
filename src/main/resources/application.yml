@@ -48,3 +48,8 @@ quarkus:
     hibernate-orm:
       database:
         generation: drop-and-create
+    http:
+      port: 8081
+      cors:
+        ~: true
+        origins: "/.*/"
