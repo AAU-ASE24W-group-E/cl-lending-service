@@ -1,13 +1,16 @@
 package at.aau.ase.cl.api;
 
+import at.aau.ase.cl.api.interceptor.exceptions.IllegalMeetingException;
 import at.aau.ase.cl.api.interceptor.exceptions.IllegalStatusException;
 import at.aau.ase.cl.api.model.LendingHistoryModel;
+import at.aau.ase.cl.api.model.LendingMeetingModel;
 import at.aau.ase.cl.api.model.LendingModel;
 import at.aau.ase.cl.api.model.LendingStatus;
 import at.aau.ase.cl.mapper.LendingHistoryMapper;
 import at.aau.ase.cl.mapper.LendingMapper;
 import at.aau.ase.cl.model.LendingEntity;
 import at.aau.ase.cl.model.LendingHistoryEntity;
+import at.aau.ase.cl.model.LendingMeetingEntity;
 import at.aau.ase.cl.service.LendingService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -17,6 +20,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -90,6 +94,17 @@ public class LendingResource {
         return Response.ok(lendingModel).build();
     }
 
+    @PATCH
+    @Path("/{id}/meeting")
+    @APIResponse(responseCode = "200", description = "OK")
+    public Response updateLendingMeeting(@PathParam("id") UUID lendingId,
+                                         LendingMeetingModel lendingMeetingModel) {
+        validateMeeting(lendingMeetingModel);
+        LendingModel updatedLendingModel = lendingService.createLendingMeeting(lendingMeetingModel, lendingId);
+
+        return Response.ok(updatedLendingModel).build();
+    }
+
     @GET
     @Path("/{id}/history")
     @APIResponse(responseCode = "200", description = "OK", content = {
@@ -113,6 +128,21 @@ public class LendingResource {
         } catch (IllegalArgumentException e) {
             throw new IllegalStatusException("Invalid status: " + status + ". Valid statuses are: " +
                     Arrays.toString(LendingStatus.values()));
+        }
+    }
+
+    private void validateMeeting(LendingMeetingModel meeting) {
+        if (meeting.getMeetingPlace() == null || meeting.getMeetingPlace().isBlank()) {
+            throw new IllegalMeetingException("Meeting place parameter is required.");
+        }
+        if (meeting.getMeetingTime() == null) {
+            throw new IllegalMeetingException("Meeting time parameter is required.");
+        }
+        if (meeting.getDeadline() == null) {
+            throw new IllegalMeetingException("Deadline parameter is required.");
+        }
+        if (meeting.getDeadline().isBefore(Instant.now()) || meeting.getMeetingTime().isBefore(Instant.now())) {
+            throw new IllegalMeetingException("Dates have to be in the future.");
         }
     }
 }

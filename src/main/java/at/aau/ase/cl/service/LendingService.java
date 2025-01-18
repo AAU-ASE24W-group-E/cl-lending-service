@@ -1,11 +1,14 @@
 package at.aau.ase.cl.service;
 
 import at.aau.ase.cl.api.interceptor.exceptions.NotFoundException;
+import at.aau.ase.cl.api.model.LendingMeetingModel;
 import at.aau.ase.cl.api.model.LendingModel;
 import at.aau.ase.cl.api.model.LendingStatus;
 import at.aau.ase.cl.mapper.LendingMapper;
+import at.aau.ase.cl.mapper.LendingMeetingMapper;
 import at.aau.ase.cl.model.LendingEntity;
 import at.aau.ase.cl.model.LendingHistoryEntity;
+import at.aau.ase.cl.model.LendingMeetingEntity;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
@@ -20,6 +23,18 @@ public class LendingService {
     @Transactional
     public LendingModel createLending(LendingModel lendingModel) {
         LendingEntity lendingEntity = LendingMapper.INSTANCE.map(lendingModel);
+
+        lendingEntity.persistAndFlush();
+
+        return LendingMapper.INSTANCE.map(lendingEntity);
+    }
+
+    @Transactional
+    public LendingModel createLendingMeeting(LendingMeetingModel lendingMeetingModel, UUID lendingId) {
+        LendingMeetingEntity lendingMeetingEntity = LendingMeetingMapper.INSTANCE.map(lendingMeetingModel);
+
+        LendingEntity lendingEntity = getLendingById(lendingId);
+        lendingEntity.setLendingMeeting(lendingMeetingEntity);
 
         lendingEntity.persistAndFlush();
 

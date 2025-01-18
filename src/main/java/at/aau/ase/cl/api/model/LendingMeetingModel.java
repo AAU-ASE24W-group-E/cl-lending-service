@@ -5,7 +5,6 @@ import java.util.UUID;
 
 public class LendingMeetingModel {
     private UUID id;
-    private UUID lendingRequestId;
     private Instant meetingTime;
     private String meetingPlace;
     private Instant deadline;
@@ -56,11 +55,5 @@ public class LendingMeetingModel {
     }
 
 
-    public UUID getLendingRequestId() {
-        return lendingRequestId;
-    }
 
-    public void setLendingRequestId(UUID lendingRequestId) {
-        this.lendingRequestId = lendingRequestId;
-    }
 }

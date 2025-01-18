@@ -1,16 +1,21 @@
 package at.aau.ase.cl.api.model;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.Instant;
 import java.util.UUID;
 
 public class LendingModel {
     private UUID id;
 
+    @NotNull
     private UUID bookId;
 
     private UUID readerId;
 
     private UUID ownerId;
+
+    private LendingMeetingModel meetingModel;
 
     private LendingStatus status;
 

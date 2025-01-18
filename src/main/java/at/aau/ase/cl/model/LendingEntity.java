@@ -23,6 +23,9 @@ public class LendingEntity extends PanacheEntityBase {
     @Column(nullable = false, name = "owner_id")
     private UUID ownerId;
 
+    @Embedded
+    private LendingMeetingEntity lendingMeeting;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private LendingStatus status;
@@ -94,5 +97,13 @@ public class LendingEntity extends PanacheEntityBase {
 
     public void setBookId(UUID bookId) {
         this.bookId = bookId;
+    }
+
+    public LendingMeetingEntity getLendingMeeting() {
+        return lendingMeeting;
+    }
+
+    public void setLendingMeeting(LendingMeetingEntity lendingMeeting) {
+        this.lendingMeeting = lendingMeeting;
     }
 }
