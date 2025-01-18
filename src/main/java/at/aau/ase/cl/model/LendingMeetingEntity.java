@@ -12,6 +12,7 @@ public class LendingMeetingEntity extends PanacheEntityBase {
 
     @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
+    // important TODO
     private UUID id;
 
     @Column(nullable = true, name = "meeting_location")
