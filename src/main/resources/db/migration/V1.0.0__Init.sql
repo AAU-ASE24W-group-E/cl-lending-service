@@ -1,16 +1,16 @@
 -- TODO need to be updated
 CREATE TABLE lending_requests
 (
-    id         UUID                                               NOT NULL PRIMARY KEY,
-    book_id    UUID                                               NOT NULL,
-    reader_id  UUID                                               NOT NULL,
-    owner_id   UUID                                               NOT NULL,
-    status     VARCHAR(255)                                       NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    meeting_time       TIMESTAMP WITH TIME ZONE,
-    meeting_location      VARCHAR(255),
-    deadline           TIMESTAMP WITH TIME ZONE,
+    id               UUID                                               NOT NULL PRIMARY KEY,
+    book_id          UUID                                               NOT NULL,
+    reader_id        UUID                                               NOT NULL,
+    owner_id         UUID                                               NOT NULL,
+    status           VARCHAR(255)                                       NOT NULL,
+    created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    meeting_time     TIMESTAMP WITH TIME ZONE,
+    meeting_location VARCHAR(255),
+    deadline         TIMESTAMP WITH TIME ZONE
 
 );
 
