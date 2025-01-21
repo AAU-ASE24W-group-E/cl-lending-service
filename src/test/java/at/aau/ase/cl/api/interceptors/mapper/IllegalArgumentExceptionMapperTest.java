@@ -1,18 +1,14 @@
 package at.aau.ase.cl.api.interceptors.mapper;
 
 import at.aau.ase.cl.api.interceptor.mapper.IllegalArgumentExceptionMapper;
-import io.quarkus.test.junit.QuarkusTest;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@QuarkusTest
 class IllegalArgumentExceptionMapperTest {
-    @Inject
-    IllegalArgumentExceptionMapper mapper;
+    IllegalArgumentExceptionMapper mapper = new IllegalArgumentExceptionMapper();
 
     @Test
     void testToResponse() {

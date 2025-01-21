@@ -103,7 +103,7 @@ class LendingServiceTest {
         lending.setBookId(testBookId);
         lending.setOwnerId(testOwnerId);
         lending.setReaderId(testReaderId);
-        lending.setStatus(LendingStatus.BORROWED);
+        lending.setStatus(LendingStatus.READER_CREATED_REQUEST);
 
         LendingModel createdLending = lendingService.createLending(lending);
         UUID lendingId = createdLending.getId();
@@ -114,8 +114,8 @@ class LendingServiceTest {
         List<LendingHistoryEntity> historyList = lendingService.getLendingHistoryByLendingId(lendingId);
         assertFalse(historyList.isEmpty());
 
-        LendingHistoryEntity historyEntity = historyList.get(0);
-        assertEquals(LendingStatus.BORROWED, historyEntity.getStatus());
+        LendingHistoryEntity historyEntity = historyList.getFirst();
+        assertEquals(LendingStatus.READER_CREATED_REQUEST, historyEntity.getStatus());
     }
 
     @Test
@@ -131,7 +131,7 @@ class LendingServiceTest {
 
         List<LendingEntity> lendings = lendingService.getLendingsByReaderId(testReaderId);
 
-        assertEquals(lendingId, lendings.get(0).getId());
+        assertEquals(lendingId, lendings.getFirst().getId());
     }
 
     @Test
@@ -146,7 +146,7 @@ class LendingServiceTest {
         UUID lendingId = createdLending.getId();
 
         List<LendingEntity> lendings = lendingService.getLendingsByOwnerId(testOwnerId);
-        assertEquals(lendingId, lendings.get(0).getId());
+        assertEquals(lendingId, lendings.getFirst().getId());
     }
 
     @Test
@@ -161,6 +161,6 @@ class LendingServiceTest {
         UUID lendingId = createdLending.getId();
 
         List<LendingEntity> lendings = lendingService.getLendingsByReaderIdAndStatus(testReaderId, LendingStatus.BORROWED);
-        assertEquals(lendingId, lendings.get(0).getId());
+        assertEquals(lendingId, lendings.getFirst().getId());
     }
 }
