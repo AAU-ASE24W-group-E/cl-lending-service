@@ -1,6 +1,7 @@
 package at.aau.ase.cl.service;
 
 import at.aau.ase.cl.api.interceptor.exceptions.InvalidOwnerReaderException;
+import at.aau.ase.cl.api.interceptor.exceptions.LendingRequestExistsException;
 import at.aau.ase.cl.api.interceptor.exceptions.NotFoundException;
 import at.aau.ase.cl.api.model.LendingMeetingModel;
 import at.aau.ase.cl.api.model.LendingModel;
@@ -23,6 +24,17 @@ public class LendingService {
 
     @Transactional
     public LendingModel createLending(LendingModel lendingModel) {
+        boolean existingRequest = LendingEntity.find("bookId = ?1 and readerId = ?2 and status not in ?3",
+                        lendingModel.getBookId(),
+                        lendingModel.getReaderId(),
+                        List.of(LendingStatus.LENDING_COMPLETED, LendingStatus.LENDING_CANCELLED))
+                .firstResultOptional()
+                .isPresent();
+
+        if (existingRequest) {
+            throw new LendingRequestExistsException("A lending request for this book by the same reader already exists and is not completed or cancelled.");
+        }
+
         LendingEntity lendingEntity = LendingMapper.INSTANCE.map(lendingModel);
 
         lendingEntity.persistAndFlush();
@@ -31,7 +43,8 @@ public class LendingService {
     }
 
     @Transactional
-    public LendingModel createLendingMeeting(LendingMeetingModel lendingMeetingModel, UUID lendingId) {
+    public LendingModel createLendingMeeting(LendingMeetingModel lendingMeetingModel,
+                                             UUID lendingId) {
         LendingMeetingEntity lendingMeetingEntity = LendingMeetingMapper.INSTANCE.map(lendingMeetingModel);
 
         LendingEntity lendingEntity = getLendingById(lendingId);
