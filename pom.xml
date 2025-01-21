@@ -15,10 +15,11 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.16.2</quarkus.platform.version>
+        <quarkus.platform.version>3.17.7</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.5.0</surefire-plugin.version>
 
+        <mapstruct.version>1.6.3</mapstruct.version>
         <jacoco.version>0.8.12</jacoco.version>
 
         <sonar.organization>aau-ase24w-group-e-1</sonar.organization>
@@ -87,12 +88,12 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.5.5.Final</version>
+            <version>${mapstruct.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
-            <version>1.5.5.Final</version>
+            <version>${mapstruct.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -146,6 +147,18 @@
             <artifactId>geolatte-geom</artifactId>
             <version>1.9.1</version>
         </dependency>
+
+        <!-- see  https://quarkus.io/guides/kafka -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-messaging-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-test-kafka-companion</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
