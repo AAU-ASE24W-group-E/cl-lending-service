@@ -51,17 +51,17 @@ public class LendingEntity extends PanacheEntityBase {
             case null -> newStatus;
 
             case READER_CREATED_REQUEST -> switch (newStatus) {
-                case OWNER_SUGGESTED_MEETING, LENDING_DECLINED, LENDING_CANCELLED, READER_WITHDREW -> newStatus;
+                case OWNER_SUGGESTED_MEETING, OWNER_DENIED, READER_WITHDREW -> newStatus;
                 default -> throw new IllegalStatusException("Invalid status transition");
             };
 
             case OWNER_SUGGESTED_MEETING -> switch (newStatus) {
-                case READER_ACCEPTED_MEETING, READER_WITHDREW, LENDING_DECLINED, LENDING_CANCELLED -> newStatus;
+                case READER_ACCEPTED_MEETING, READER_WITHDREW, OWNER_DENIED -> newStatus;
                 default -> throw new IllegalStatusException("Invalid status transition");
             };
 
             case READER_ACCEPTED_MEETING -> switch (newStatus) {
-                case READER_CONFIRMED_TRANSFER, OWNER_CONFIRMED_TRANSFER, READER_WITHDREW, LENDING_DECLINED, LENDING_CANCELLED -> newStatus;
+                case READER_CONFIRMED_TRANSFER, OWNER_CONFIRMED_TRANSFER, READER_WITHDREW, OWNER_DENIED -> newStatus;
                 default -> throw new IllegalStatusException("Invalid status transition");
             };
 
@@ -81,12 +81,7 @@ public class LendingEntity extends PanacheEntityBase {
                 default -> throw new IllegalStatusException("Invalid status transition");
             };
 
-            case READER_WITHDREW -> switch (newStatus) {
-                case LENDING_DECLINED -> LendingStatus.LENDING_DECLINED;
-                default -> throw new IllegalStatusException("Invalid status transition");
-            };
-
-            case LENDING_COMPLETED, LENDING_CANCELLED, LENDING_DECLINED -> throw new IllegalStatusException("No further transitions allowed from this status");
+            case READER_WITHDREW, OWNER_DENIED, LENDING_COMPLETED -> throw new IllegalStatusException("No further transitions allowed from this status");
 
             default -> throw new IllegalStatusException("Unknown status");
         };

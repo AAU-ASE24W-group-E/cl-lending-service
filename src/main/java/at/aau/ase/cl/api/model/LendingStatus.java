@@ -12,6 +12,4 @@ public enum LendingStatus {
     OWNER_DENIED,
     READER_WITHDREW,
     LENDING_COMPLETED,
-    LENDING_CANCELLED,
-    LENDING_DECLINED
 }

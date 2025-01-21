@@ -30,7 +30,7 @@ public class LendingService {
         boolean existingRequest = LendingEntity.find("bookId = ?1 and readerId = ?2 and status not in ?3",
                         lendingModel.getBookId(),
                         lendingModel.getReaderId(),
-                        List.of(LendingStatus.LENDING_COMPLETED, LendingStatus.LENDING_CANCELLED, LendingStatus.LENDING_DECLINED))
+                        List.of(LendingStatus.LENDING_COMPLETED, LendingStatus.READER_WITHDREW, LendingStatus.OWNER_DENIED))
                 .firstResultOptional()
                 .isPresent();
 
