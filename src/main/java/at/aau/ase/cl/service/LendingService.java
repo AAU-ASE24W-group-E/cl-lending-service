@@ -13,6 +13,7 @@ import at.aau.ase.cl.model.LendingHistoryEntity;
 import at.aau.ase.cl.model.LendingMeetingEntity;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.time.Instant;
@@ -21,6 +22,8 @@ import java.util.UUID;
 
 @ApplicationScoped
 public class LendingService {
+    @Inject
+    EventService eventService;
 
     @Transactional
     public LendingModel createLending(LendingModel lendingModel) {
@@ -39,6 +42,8 @@ public class LendingService {
 
         lendingEntity.persistAndFlush();
 
+        eventService.sendLendingEvent(lendingEntity);
+
         return LendingMapper.INSTANCE.map(lendingEntity);
     }
 
@@ -49,8 +54,11 @@ public class LendingService {
 
         LendingEntity lendingEntity = getLendingById(lendingId);
         lendingEntity.setLendingMeeting(lendingMeetingEntity);
+        lendingEntity.setStatus(LendingStatus.OWNER_SUGGESTED_MEETING);
 
-        lendingEntity.persistAndFlush();
+        LendingEntity.flush();
+
+        eventService.sendLendingEvent(lendingEntity);
 
         return LendingMapper.INSTANCE.map(lendingEntity);
     }
@@ -84,7 +92,9 @@ public class LendingService {
 
         lendingEntity.setStatus(status);
         lendingEntity.setUpdatedAt(Instant.now());
-        lendingEntity.persistAndFlush();
+        LendingEntity.flush();
+
+        eventService.sendLendingEvent(lendingEntity);
 
         return LendingMapper.INSTANCE.map(lendingEntity);
     }
