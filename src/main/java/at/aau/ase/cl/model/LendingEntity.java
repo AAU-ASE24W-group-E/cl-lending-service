@@ -49,16 +49,19 @@ public class LendingEntity extends PanacheEntityBase {
 
         return switch (this.status) {
             case null -> newStatus;
+
             case READER_CREATED_REQUEST -> switch (newStatus) {
-                case OWNER_SUGGESTED_MEETING, OWNER_DENIED, READER_WITHDREW -> newStatus;
+                case OWNER_SUGGESTED_MEETING, LENDING_DECLINED, LENDING_CANCELLED, READER_WITHDREW -> newStatus;
                 default -> throw new IllegalStatusException("Invalid status transition");
             };
+
             case OWNER_SUGGESTED_MEETING -> switch (newStatus) {
-                case READER_ACCEPTED_MEETING, READER_WITHDREW, OWNER_DENIED -> newStatus;
+                case READER_ACCEPTED_MEETING, READER_WITHDREW, LENDING_DECLINED, LENDING_CANCELLED -> newStatus;
                 default -> throw new IllegalStatusException("Invalid status transition");
             };
+
             case READER_ACCEPTED_MEETING -> switch (newStatus) {
-                case READER_CONFIRMED_TRANSFER, OWNER_CONFIRMED_TRANSFER, READER_WITHDREW, OWNER_DENIED -> newStatus;
+                case READER_CONFIRMED_TRANSFER, OWNER_CONFIRMED_TRANSFER, READER_WITHDREW, LENDING_DECLINED, LENDING_CANCELLED -> newStatus;
                 default -> throw new IllegalStatusException("Invalid status transition");
             };
 
@@ -71,13 +74,23 @@ public class LendingEntity extends PanacheEntityBase {
                 case READER_RETURNED_BOOK, OWNER_CONFIRMED_RETURNAL -> newStatus;
                 default -> throw new IllegalStatusException("Invalid status transition");
             };
+
             case READER_RETURNED_BOOK, OWNER_CONFIRMED_RETURNAL -> switch (newStatus) {
                 case OWNER_CONFIRMED_RETURNAL, READER_RETURNED_BOOK -> LendingStatus.OWNER_CONFIRMED_RETURNAL;
+                case LENDING_COMPLETED -> LendingStatus.LENDING_COMPLETED;
                 default -> throw new IllegalStatusException("Invalid status transition");
             };
 
-            case OWNER_DENIED, READER_WITHDREW -> throw new IllegalStatusException("Invalid status transition");
+            case READER_WITHDREW -> switch (newStatus) {
+                case LENDING_DECLINED -> LendingStatus.LENDING_DECLINED;
+                default -> throw new IllegalStatusException("Invalid status transition");
+            };
+
+            case LENDING_COMPLETED, LENDING_CANCELLED, LENDING_DECLINED -> throw new IllegalStatusException("No further transitions allowed from this status");
+
+            default -> throw new IllegalStatusException("Unknown status");
         };
+
     }
 
     public UUID getId() {
