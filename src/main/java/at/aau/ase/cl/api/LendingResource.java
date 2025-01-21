@@ -2,6 +2,7 @@ package at.aau.ase.cl.api;
 
 import at.aau.ase.cl.api.interceptor.exceptions.IllegalMeetingException;
 import at.aau.ase.cl.api.interceptor.exceptions.IllegalStatusException;
+import at.aau.ase.cl.api.interceptor.exceptions.InvalidOwnerReaderException;
 import at.aau.ase.cl.api.model.LendingHistoryModel;
 import at.aau.ase.cl.api.model.LendingMeetingModel;
 import at.aau.ase.cl.api.model.LendingModel;
@@ -11,6 +12,7 @@ import at.aau.ase.cl.mapper.LendingMapper;
 import at.aau.ase.cl.model.LendingEntity;
 import at.aau.ase.cl.model.LendingHistoryEntity;
 import at.aau.ase.cl.service.LendingService;
+import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -34,6 +36,10 @@ public class LendingResource {
     @POST
     @Path("/")
     public Response createLending(LendingModel lendingModel) {
+        if (lendingModel.getOwnerId().equals(lendingModel.getReaderId())) {
+            throw new InvalidOwnerReaderException("Owner cannot create lending request for their own book");
+        }
+
         LendingModel createdLending = lendingService.createLending(lendingModel);
 
         return Response.ok(createdLending).build();

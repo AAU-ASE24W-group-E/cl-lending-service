@@ -25,10 +25,6 @@ public class LendingService {
     public LendingModel createLending(LendingModel lendingModel) {
         LendingEntity lendingEntity = LendingMapper.INSTANCE.map(lendingModel);
 
-        if(lendingEntity.getOwnerId() == lendingEntity.getReaderId()) {
-            throw new InvalidOwnerReaderException("Owner cannot create lending request for their own book");
-        }
-
         lendingEntity.persistAndFlush();
 
         return LendingMapper.INSTANCE.map(lendingEntity);

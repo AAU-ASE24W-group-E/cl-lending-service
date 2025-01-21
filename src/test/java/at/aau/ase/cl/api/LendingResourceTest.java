@@ -47,6 +47,21 @@ class LendingResourceTest {
                 .body("status", equalTo(LendingStatus.BORROWED.toString()));
     }
 
+    @Test
+    void testCreateLendingError() {
+        LendingModel lending = new LendingModel(bookId, ownerId, ownerId, null, LendingStatus.BORROWED);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(lending)
+                .post("/lendings")
+                .then()
+                .statusCode(409)
+                .log().body(true)
+                .body("type", equalTo("InvalidOwnerReaderException"))
+                .body("message", equalTo("Owner cannot create lending request for their own book"));
+    }
+
 
     @Test
     void testGetLending() {

@@ -52,17 +52,6 @@ class LendingServiceTest {
     }
 
     @Test
-    void testCreateLendingError() {
-        LendingModel lending = new LendingModel();
-        lending.setBookId(testBookId);
-        lending.setReaderId(testOwnerId);
-        lending.setOwnerId(testOwnerId);
-        lending.setStatus(LendingStatus.BORROWED);
-
-        assertThrows(InvalidOwnerReaderException.class, () -> lendingService.createLending(lending));
-    }
-
-    @Test
     void testGetLendingByIdFound() {
         LendingModel lending = new LendingModel();
         lending.setBookId(testBookId);
