@@ -149,7 +149,7 @@ class LendingResourceTest {
 
     @Test
     void testUpdateLendingStatus() {
-        String id = createLendingAndGetId(LendingStatus.BORROWED);
+        String id = createLendingAndGetId(LendingStatus.READER_CREATED_REQUEST);
 
         given()
                 .contentType(ContentType.JSON)
@@ -204,7 +204,7 @@ class LendingResourceTest {
 
     @Test
     void testGetLendingHistory() {
-        String id = createLendingAndGetId(LendingStatus.BORROWED);
+        String id = createLendingAndGetId(LendingStatus.READER_CREATED_REQUEST);
 
         given()
                 .contentType(ContentType.JSON)
@@ -227,7 +227,7 @@ class LendingResourceTest {
                 .log().body(true)
                 .body("$.size()", equalTo(1))
                 .body("[0].lendingRequestId", equalTo(id))
-                .body("[0].status", equalTo(LendingStatus.BORROWED.toString()))
+                .body("[0].status", equalTo(LendingStatus.READER_CREATED_REQUEST.toString()))
                 .extract();
     }
 
@@ -253,7 +253,7 @@ class LendingResourceTest {
 
     @Test
     void testPostMeetingSuccessfully() {
-        String id = createLendingAndGetId(LendingStatus.BORROWED);
+        String id = createLendingAndGetId(LendingStatus.READER_CREATED_REQUEST);
         LendingMeetingModel meeting = new LendingMeetingModel(Instant.now().plus(30, ChronoUnit.DAYS),
                                                 "Location",Instant.now().plus(30, ChronoUnit.DAYS) );
 
@@ -267,7 +267,7 @@ class LendingResourceTest {
                 .body("bookId", equalTo(bookId.toString()))
                 .body("readerId", equalTo(readerId.toString()))
                 .body("ownerId", equalTo(ownerId.toString()))
-                .body("status", equalTo(LendingStatus.BORROWED.toString()))
+                .body("status", equalTo(LendingStatus.OWNER_SUGGESTED_MEETING.toString()))
                 .body("lendingMeeting.meetingLocation", equalTo("Location"));
 
     }
