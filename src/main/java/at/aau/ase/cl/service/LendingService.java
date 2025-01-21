@@ -1,5 +1,6 @@
 package at.aau.ase.cl.service;
 
+import at.aau.ase.cl.api.interceptor.exceptions.InvalidOwnerReaderException;
 import at.aau.ase.cl.api.interceptor.exceptions.NotFoundException;
 import at.aau.ase.cl.api.model.LendingMeetingModel;
 import at.aau.ase.cl.api.model.LendingModel;
@@ -23,6 +24,10 @@ public class LendingService {
     @Transactional
     public LendingModel createLending(LendingModel lendingModel) {
         LendingEntity lendingEntity = LendingMapper.INSTANCE.map(lendingModel);
+
+        if(lendingEntity.getOwnerId() == lendingEntity.getReaderId()) {
+            throw new InvalidOwnerReaderException("Owner cannot create lending request for their own book");
+        }
 
         lendingEntity.persistAndFlush();
 

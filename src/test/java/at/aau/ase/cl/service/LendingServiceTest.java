@@ -1,5 +1,6 @@
 package at.aau.ase.cl.service;
 
+import at.aau.ase.cl.api.interceptor.exceptions.InvalidOwnerReaderException;
 import at.aau.ase.cl.api.interceptor.exceptions.NotFoundException;
 import at.aau.ase.cl.api.model.LendingModel;
 import at.aau.ase.cl.api.model.LendingStatus;
@@ -48,6 +49,17 @@ class LendingServiceTest {
         assertEquals(testOwnerId, createdLending.getOwnerId());
         assertEquals(testBookId, createdLending.getBookId());
         assertEquals(LendingStatus.BORROWED, createdLending.getStatus());
+    }
+
+    @Test
+    void testCreateLendingError() {
+        LendingModel lending = new LendingModel();
+        lending.setBookId(testBookId);
+        lending.setReaderId(testOwnerId);
+        lending.setOwnerId(testOwnerId);
+        lending.setStatus(LendingStatus.BORROWED);
+
+        assertThrows(InvalidOwnerReaderException.class, () -> lendingService.createLending(lending));
     }
 
     @Test
