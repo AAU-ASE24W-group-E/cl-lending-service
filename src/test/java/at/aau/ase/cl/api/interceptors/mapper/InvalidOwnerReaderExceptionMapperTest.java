@@ -1,6 +1,5 @@
 package at.aau.ase.cl.api.interceptors.mapper;
 
-import at.aau.ase.cl.api.interceptor.exceptions.IllegalStatusException;
 import at.aau.ase.cl.api.interceptor.exceptions.InvalidOwnerReaderException;
 import at.aau.ase.cl.api.interceptor.mapper.InvalidOwnerReaderExceptionMapper;
 import io.quarkus.test.junit.QuarkusTest;
