@@ -14,7 +14,7 @@ CREATE TABLE lending_requests
 
 );
 
-CREATE TABLE lending_status_history
+CREATE TABLE lending_history
 (
     id                 UUID                                               NOT NULL PRIMARY KEY,
     lending_request_id UUID                                               NOT NULL,
