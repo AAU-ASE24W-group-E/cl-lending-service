@@ -22,7 +22,7 @@ public class LendingHistoryEntity extends PanacheEntityBase {
     @Column(nullable = false)
     private LendingStatus status;
 
-    @Column(nullable = false, updatable = false, name = "created_at")
+    @Column(nullable = false, updatable = false, name = "changed_at")
     private Instant changedAt;
 
     public LendingHistoryEntity() {
