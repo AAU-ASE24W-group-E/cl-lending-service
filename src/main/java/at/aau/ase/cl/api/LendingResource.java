@@ -12,7 +12,6 @@ import at.aau.ase.cl.mapper.LendingMapper;
 import at.aau.ase.cl.model.LendingEntity;
 import at.aau.ase.cl.model.LendingHistoryEntity;
 import at.aau.ase.cl.service.LendingService;
-import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;

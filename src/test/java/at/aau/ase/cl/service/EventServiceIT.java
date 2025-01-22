@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static io.restassured.RestAssured.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
 @QuarkusTestResource(KafkaCompanionResource.class)
@@ -57,7 +57,7 @@ class EventServiceIT {
         var partition = new TopicPartition(topicName, 0);
         var topics = admin.listTopics().names().get();
         if (!topics.contains(topicName)) {
-            admin.createTopics(List.of(new NewTopic(topicName, 1, (short)1)))
+            admin.createTopics(List.of(new NewTopic(topicName, 1, (short) 1)))
                     .all().get();
         } else {
             var offsetInfo = admin.listOffsets(Map.of(partition, OffsetSpec.latest()))
@@ -97,9 +97,9 @@ class EventServiceIT {
 
         given().contentType(ContentType.JSON)
                 .body(new LendingMeetingModel(
-                        Instant.now().plusSeconds(3600*24),
+                        Instant.now().plusSeconds(3600 * 24),
                         "test location",
-                        Instant.now().plusSeconds(3600*24*7)))
+                        Instant.now().plusSeconds(3600 * 24 * 7)))
                 .post("/lendings/{id}/meeting", lending.getId())
                 .then()
                 .statusCode(200);

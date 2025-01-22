@@ -26,6 +26,7 @@ public class LendingHistoryEntity extends PanacheEntityBase {
     private Instant changedAt;
 
     public LendingHistoryEntity() {
+        //
     }
 
     public UUID getId() {

@@ -12,7 +12,10 @@ public class LendingHistoryModel {
     public LendingHistoryModel() {
     }
 
-    public LendingHistoryModel(UUID id, UUID lendingRequestId, LendingStatus status, Instant changedAt) {
+    public LendingHistoryModel(UUID id,
+                               UUID lendingRequestId,
+                               LendingStatus status,
+                               Instant changedAt) {
         this.id = id;
         this.lendingRequestId = lendingRequestId;
         this.status = status;

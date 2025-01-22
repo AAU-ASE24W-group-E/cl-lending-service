@@ -1,7 +1,7 @@
 package at.aau.ase.cl.api.interceptors.mapper;
 
-import at.aau.ase.cl.api.interceptor.exceptions.InvalidOwnerReaderException;
-import at.aau.ase.cl.api.interceptor.mapper.InvalidOwnerReaderExceptionMapper;
+import at.aau.ase.cl.api.interceptor.exceptions.LendingRequestExistsException;
+import at.aau.ase.cl.api.interceptor.mapper.LendingRequestExistsMapper;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
-class InvalidOwnerReaderExceptionMapperTest {
+class LendingRequestExistsExceptionMapperTest {
     @Inject
-    InvalidOwnerReaderExceptionMapper mapper;
+    LendingRequestExistsMapper mapper;
 
     @Test
     void testToResponse() {
-        InvalidOwnerReaderException exception = new InvalidOwnerReaderException("Test invalid argument");
+        LendingRequestExistsException exception = new LendingRequestExistsException("Test invalid argument");
 
         Response response = mapper.toResponse(exception);
 

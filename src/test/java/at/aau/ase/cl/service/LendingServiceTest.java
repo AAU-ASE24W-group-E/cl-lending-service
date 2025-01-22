@@ -1,6 +1,5 @@
 package at.aau.ase.cl.service;
 
-import at.aau.ase.cl.api.interceptor.exceptions.InvalidOwnerReaderException;
 import at.aau.ase.cl.api.interceptor.exceptions.NotFoundException;
 import at.aau.ase.cl.api.model.LendingModel;
 import at.aau.ase.cl.api.model.LendingStatus;
@@ -8,7 +7,8 @@ import at.aau.ase.cl.model.LendingEntity;
 import at.aau.ase.cl.model.LendingHistoryEntity;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 import java.util.List;

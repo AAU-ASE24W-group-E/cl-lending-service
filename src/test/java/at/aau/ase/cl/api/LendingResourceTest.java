@@ -82,8 +82,10 @@ class LendingResourceTest {
 
     @Test
     void testGetLendingsByReaderId() {
-        String lendingId1 = createLendingAndGetId(LendingStatus.BORROWED);
-        String lendingId2 = createLendingAndGetId(LendingStatus.BORROWED);
+        UUID bookId1 = UUID.randomUUID();
+        UUID bookId2 = UUID.randomUUID();
+        String lendingId1 = createLendingWithSpecificBook(LendingStatus.READER_CREATED_REQUEST, bookId1);
+        String lendingId2 = createLendingWithSpecificBook(LendingStatus.READER_CREATED_REQUEST, bookId2);
 
         given()
                 .contentType(ContentType.JSON)
@@ -98,20 +100,22 @@ class LendingResourceTest {
                 .body("[1].readerId", equalTo(readerId.toString()))
                 .body("[0].ownerId", equalTo(ownerId.toString()))
                 .body("[1].ownerId", equalTo(ownerId.toString()))
-                .body("[0].bookId", equalTo(bookId.toString()))
-                .body("[1].bookId", equalTo(bookId.toString()))
-                .body("[0].status", equalTo(LendingStatus.BORROWED.toString()))
-                .body("[1].status", equalTo(LendingStatus.BORROWED.toString()));
+                .body("[0].bookId", equalTo(bookId2.toString()))
+                .body("[1].bookId", equalTo(bookId1.toString()))
+                .body("[0].status", equalTo(LendingStatus.READER_CREATED_REQUEST.toString()))
+                .body("[1].status", equalTo(LendingStatus.READER_CREATED_REQUEST.toString()));
     }
 
     @Test
     void testGetLendingsByReaderIdOfSpecificStatus() {
-        String lendingId1 = createLendingAndGetId(LendingStatus.BORROWED);
+        UUID bookId1 = UUID.randomUUID();
+        String lendingId1 = createLendingWithSpecificBook(LendingStatus.READER_CREATED_REQUEST, bookId1);
+
         createLendingAndGetId(LendingStatus.OWNER_DENIED);
 
         given()
                 .contentType(ContentType.JSON)
-                .get("/lendings/readers/" + readerId + "?status=BORROWED")
+                .get("/lendings/readers/" + readerId + "?status=READER_CREATED_REQUEST")
                 .then()
                 .statusCode(200)
                 .log().body(true)
@@ -119,14 +123,17 @@ class LendingResourceTest {
                 .body("[0].id", is(lendingId1))
                 .body("[0].readerId", equalTo(readerId.toString()))
                 .body("[0].ownerId", equalTo(ownerId.toString()))
-                .body("[0].bookId", equalTo(bookId.toString()))
-                .body("[0].status", equalTo(LendingStatus.BORROWED.toString()));
+                .body("[0].bookId", equalTo(bookId1.toString()))
+                .body("[0].status", equalTo(LendingStatus.READER_CREATED_REQUEST.toString()));
     }
 
     @Test
     void testGetLendingsByOwnerId() {
-        String lendingId1 = createLendingAndGetId(LendingStatus.BORROWED);
-        String lendingId2 = createLendingAndGetId(LendingStatus.BORROWED);
+        UUID bookId1 = UUID.randomUUID();
+        UUID bookId2 = UUID.randomUUID();
+
+        String lendingId1 = createLendingWithSpecificBook(LendingStatus.BORROWED, bookId1);
+        String lendingId2 = createLendingWithSpecificBook(LendingStatus.BORROWED, bookId2);
 
         given()
                 .contentType(ContentType.JSON)
@@ -141,8 +148,8 @@ class LendingResourceTest {
                 .body("[1].readerId", equalTo(readerId.toString()))
                 .body("[0].ownerId", equalTo(ownerId.toString()))
                 .body("[1].ownerId", equalTo(ownerId.toString()))
-                .body("[0].bookId", equalTo(bookId.toString()))
-                .body("[1].bookId", equalTo(bookId.toString()))
+                .body("[0].bookId", equalTo(bookId2.toString()))
+                .body("[1].bookId", equalTo(bookId1.toString()))
                 .body("[0].status", equalTo(LendingStatus.BORROWED.toString()))
                 .body("[1].status", equalTo(LendingStatus.BORROWED.toString()));
     }
@@ -250,12 +257,31 @@ class LendingResourceTest {
                 .path("id");
     }
 
+    private String createLendingWithSpecificBook(LendingStatus status,
+                                                 UUID book) {
+        LendingModel lending = new LendingModel(book, readerId, ownerId, null, status);
+
+        return given()
+                .contentType(ContentType.JSON)
+                .body(lending)
+                .post("/lendings")
+                .then()
+                .statusCode(200)
+                .log().body(true)
+                .body("bookId", equalTo(book.toString()))
+                .body("ownerId", equalTo(ownerId.toString()))
+                .body("readerId", equalTo(readerId.toString()))
+                .body("status", equalTo(status.toString()))
+                .extract()
+                .path("id");
+    }
+
 
     @Test
     void testPostMeetingSuccessfully() {
         String id = createLendingAndGetId(LendingStatus.READER_CREATED_REQUEST);
         LendingMeetingModel meeting = new LendingMeetingModel(Instant.now().plus(30, ChronoUnit.DAYS),
-                                                "Location",Instant.now().plus(30, ChronoUnit.DAYS) );
+                "Location", Instant.now().plus(30, ChronoUnit.DAYS));
 
         given()
                 .contentType(ContentType.JSON)
@@ -276,7 +302,7 @@ class LendingResourceTest {
     void testPostEmptyMeetingLocation() {
         String id = createLendingAndGetId(LendingStatus.BORROWED);
         LendingMeetingModel meeting = new LendingMeetingModel(Instant.now().plus(30, ChronoUnit.DAYS),
-                "",Instant.now().plus(30, ChronoUnit.DAYS) );
+                "", Instant.now().plus(30, ChronoUnit.DAYS));
 
         given()
                 .contentType(ContentType.JSON)
@@ -293,7 +319,7 @@ class LendingResourceTest {
     void testPostEmptyDeadline() {
         String id = createLendingAndGetId(LendingStatus.BORROWED);
         LendingMeetingModel meeting = new LendingMeetingModel(Instant.now().plus(30, ChronoUnit.DAYS),
-                "Location", null );
+                "Location", null);
 
         given()
                 .contentType(ContentType.JSON)
@@ -310,7 +336,7 @@ class LendingResourceTest {
     void testPostEmptyMeetingTime() {
         String id = createLendingAndGetId(LendingStatus.BORROWED);
         LendingMeetingModel meeting = new LendingMeetingModel(null,
-                "Location", Instant.now().plus(30, ChronoUnit.DAYS) );
+                "Location", Instant.now().plus(30, ChronoUnit.DAYS));
 
         given()
                 .contentType(ContentType.JSON)
@@ -327,7 +353,7 @@ class LendingResourceTest {
     void testPostPastMeetingTime() {
         String id = createLendingAndGetId(LendingStatus.BORROWED);
         LendingMeetingModel meeting = new LendingMeetingModel(Instant.now().minus(30, ChronoUnit.DAYS),
-                "Location", Instant.now().plus(30, ChronoUnit.DAYS) );
+                "Location", Instant.now().plus(30, ChronoUnit.DAYS));
 
         given()
                 .contentType(ContentType.JSON)
@@ -344,7 +370,7 @@ class LendingResourceTest {
     void testPostPastDeadline() {
         String id = createLendingAndGetId(LendingStatus.BORROWED);
         LendingMeetingModel meeting = new LendingMeetingModel(Instant.now().minus(30, ChronoUnit.DAYS),
-                "Location", Instant.now().minus(30, ChronoUnit.DAYS) );
+                "Location", Instant.now().minus(30, ChronoUnit.DAYS));
 
         given()
                 .contentType(ContentType.JSON)
