@@ -54,6 +54,8 @@ mp:
     flyway:
       # in %test we drop-and-create the database, thus, migration is neither needed nor possible
       migrate-at-start: false
+    jacoco:
+      reuse-data-file: true
 
 "%dev":
   quarkus:
