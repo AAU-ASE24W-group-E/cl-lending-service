@@ -258,7 +258,7 @@ class LendingResourceTest {
     }
 
     private String createLendingWithSpecificBook(LendingStatus status,
-                                                   UUID book) {
+                                                 UUID book) {
         LendingModel lending = new LendingModel(book, readerId, ownerId, null, status);
 
         return given()

@@ -10,7 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class LendingEntityUnitTest {
     LendingEntity entity;
@@ -25,7 +26,7 @@ class LendingEntityUnitTest {
     void validStatusTransitionShouldSetStatus(List<LendingStatus> statusTransition) {
         assertNull(entity.getStatus());
 
-        for(var status : statusTransition) {
+        for (var status : statusTransition) {
             entity.setStatus(status);
         }
 

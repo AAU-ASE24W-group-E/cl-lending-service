@@ -1,7 +1,6 @@
 package at.aau.ase.cl.api.interceptor.mapper;
 
 import at.aau.ase.cl.api.interceptor.ErrorResponse;
-import at.aau.ase.cl.api.interceptor.exceptions.InvalidOwnerReaderException;
 import at.aau.ase.cl.api.interceptor.exceptions.LendingRequestExistsException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;

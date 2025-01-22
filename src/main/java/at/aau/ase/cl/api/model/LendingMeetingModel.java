@@ -7,13 +7,15 @@ public class LendingMeetingModel {
     private String meetingLocation;
     private Instant deadline;
 
-    public LendingMeetingModel(Instant meetingTime, String meetingLocation, Instant deadline) {
+    public LendingMeetingModel(Instant meetingTime,
+                               String meetingLocation,
+                               Instant deadline) {
         this.meetingTime = meetingTime;
         this.deadline = deadline;
         this.meetingLocation = meetingLocation;
     }
 
-    public LendingMeetingModel(){
+    public LendingMeetingModel() {
 
     }
 

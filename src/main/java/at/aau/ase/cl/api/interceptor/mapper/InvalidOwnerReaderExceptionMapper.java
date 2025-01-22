@@ -1,7 +1,6 @@
 package at.aau.ase.cl.api.interceptor.mapper;
 
 import at.aau.ase.cl.api.interceptor.ErrorResponse;
-import at.aau.ase.cl.api.interceptor.exceptions.IllegalStatusException;
 import at.aau.ase.cl.api.interceptor.exceptions.InvalidOwnerReaderException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;

@@ -81,7 +81,8 @@ public class LendingEntity extends PanacheEntityBase {
                 default -> throw new IllegalStatusException("Invalid status transition");
             };
 
-            case READER_WITHDREW, OWNER_DENIED, LENDING_COMPLETED -> throw new IllegalStatusException("No further transitions allowed from this status");
+            case READER_WITHDREW, OWNER_DENIED, LENDING_COMPLETED ->
+                    throw new IllegalStatusException("No further transitions allowed from this status");
 
             default -> throw new IllegalStatusException("Unknown status");
         };

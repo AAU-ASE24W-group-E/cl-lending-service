@@ -1,6 +1,5 @@
 package at.aau.ase.cl.service;
 
-import at.aau.ase.cl.api.interceptor.exceptions.InvalidOwnerReaderException;
 import at.aau.ase.cl.api.interceptor.exceptions.LendingRequestExistsException;
 import at.aau.ase.cl.api.interceptor.exceptions.NotFoundException;
 import at.aau.ase.cl.api.model.LendingMeetingModel;
