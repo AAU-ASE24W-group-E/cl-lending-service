@@ -45,6 +45,7 @@ public class LendingEntity extends PanacheEntityBase {
     }
 
     LendingStatus validateStatusTransition(LendingStatus newStatus) {
+        String invalidStatusMessage = "Invalid status transition";
         Log.tracef("Attempt to change %s status from %s to %s", this.id, this.status, newStatus);
 
         return switch (this.status) {
@@ -52,33 +53,33 @@ public class LendingEntity extends PanacheEntityBase {
 
             case READER_CREATED_REQUEST -> switch (newStatus) {
                 case OWNER_SUGGESTED_MEETING, OWNER_DENIED, READER_WITHDREW -> newStatus;
-                default -> throw new IllegalStatusException("Invalid status transition");
+                default -> throw new IllegalStatusException(invalidStatusMessage);
             };
 
             case OWNER_SUGGESTED_MEETING -> switch (newStatus) {
                 case READER_ACCEPTED_MEETING, READER_WITHDREW, OWNER_DENIED -> newStatus;
-                default -> throw new IllegalStatusException("Invalid status transition");
+                default -> throw new IllegalStatusException(invalidStatusMessage);
             };
 
             case READER_ACCEPTED_MEETING -> switch (newStatus) {
                 case READER_CONFIRMED_TRANSFER, OWNER_CONFIRMED_TRANSFER, READER_WITHDREW, OWNER_DENIED -> newStatus;
-                default -> throw new IllegalStatusException("Invalid status transition");
+                default -> throw new IllegalStatusException(invalidStatusMessage);
             };
 
             case READER_CONFIRMED_TRANSFER, OWNER_CONFIRMED_TRANSFER -> switch (newStatus) {
                 case OWNER_CONFIRMED_TRANSFER, READER_CONFIRMED_TRANSFER -> LendingStatus.BORROWED;
-                default -> throw new IllegalStatusException("Invalid status transition");
+                default -> throw new IllegalStatusException(invalidStatusMessage);
             };
 
             case BORROWED -> switch (newStatus) {
                 case READER_RETURNED_BOOK, OWNER_CONFIRMED_RETURNAL -> newStatus;
-                default -> throw new IllegalStatusException("Invalid status transition");
+                default -> throw new IllegalStatusException(invalidStatusMessage);
             };
 
             case READER_RETURNED_BOOK, OWNER_CONFIRMED_RETURNAL -> switch (newStatus) {
                 case OWNER_CONFIRMED_RETURNAL, READER_RETURNED_BOOK -> LendingStatus.OWNER_CONFIRMED_RETURNAL;
                 case LENDING_COMPLETED -> LendingStatus.LENDING_COMPLETED;
-                default -> throw new IllegalStatusException("Invalid status transition");
+                default -> throw new IllegalStatusException(invalidStatusMessage);
             };
 
             case READER_WITHDREW, OWNER_DENIED, LENDING_COMPLETED ->
