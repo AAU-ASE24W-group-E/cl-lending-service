@@ -1,5 +1,6 @@
 package at.aau.ase.cl.service;
 
+import at.aau.ase.cl.api.interceptor.exceptions.LendingRequestExistsException;
 import at.aau.ase.cl.api.interceptor.exceptions.NotFoundException;
 import at.aau.ase.cl.api.model.LendingModel;
 import at.aau.ase.cl.api.model.LendingStatus;
@@ -49,6 +50,22 @@ class LendingServiceTest {
         assertEquals(testOwnerId, createdLending.getOwnerId());
         assertEquals(testBookId, createdLending.getBookId());
         assertEquals(LendingStatus.BORROWED, createdLending.getStatus());
+    }
+
+    @Test
+    void testCreateDuplicateLending() {
+        LendingModel lending = new LendingModel();
+        lending.setBookId(testBookId);
+        lending.setReaderId(testReaderId);
+        lending.setOwnerId(testOwnerId);
+        lending.setStatus(LendingStatus.BORROWED);
+
+        LendingModel createdLending = lendingService.createLending(lending);
+
+        assertNotNull(createdLending);
+        assertNotNull(createdLending.getId());
+
+        assertThrows(LendingRequestExistsException.class, () -> lendingService.createLending(lending));
     }
 
     @Test
